@@ -1,5 +1,6 @@
 import './App.css'
 import OrderFlow from './OrderFlow'
+import ShopDashboard from './ShopDashboard'
 
 const steps = [
   { number: '01', title: 'Upload', text: 'Add your documents and tell us what you need printed.', icon: 'file' },
@@ -76,6 +77,7 @@ function Footer() {
 
 function App() {
   if (window.location.pathname === '/order') return <OrderFlow />
+  if (window.location.pathname === '/shop') return <ShopDashboard />
 
   return <><Header /><main><Hero /><ProblemSolution /><HowItWorks /><Features /><CallToAction /></main><Footer /></>
 }
