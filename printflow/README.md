@@ -73,69 +73,7 @@ The current MVP policies allow anonymous shop reads, order creation, order reads
 └── vite.config.ts                  # Vite configuration
 ```
 
-## Getting Started
 
-### Prerequisites
-
-- Node.js 20.19+ or 22.12+
-- npm
-- A Supabase project for database-backed features
-
-### Installation
-
-```bash
-npm install
-```
-
-Copy `.env.example` to `.env` and add your own Supabase project URL and publishable/anon key. The `.env` file is ignored by Git and must not be committed.
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Environment Variables
-
-Set these variables in your local `.env` file:
-
-| Variable | Description |
-| --- | --- |
-| `VITE_SUPABASE_URL` | Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Supabase publishable/anon client key |
-
-Start by copying `.env.example` to `.env`, then provide your own project values. Vite variables are included in browser code; use only the publishable/anon key here. Never put a Supabase service-role key in frontend environment variables.
-
-## Database
-
-- `shops` stores shop names, locations, and per-page prices.
-- `orders` stores order and pickup identifiers, selected shop, filename and private storage path, print options, estimated price, status, and creation time.
-
-SQL migrations are in `supabase/migrations/` and should be applied in filename order:
-
-1. `20261008010000_initial_printflow_schema.sql` — creates the tables and seeds three demo Accra shops.
-2. `20261008020000_client_order_policies.sql` — configures shop reads and customer order inserts.
-3. `20261008030000_shop_dashboard_policies.sql` — configures dashboard order reads and status-only updates.
-4. `20261008040000_private_print_file_storage.sql` — creates the private document bucket, permits anonymous uploads only, and adds `orders.file_path`.
-
-## Testing
-
-There is no automated test suite configured yet. The current build verification is `npm run build`, which runs the TypeScript project build followed by the Vite production build.
-
-## Screenshots
-
-Screenshots will be added here.
-
-## Future Improvements
-
-- Add authentication and shop-scoped dashboard access.
-- Add automated tests and production deployment configuration.
 
 ## Author
 
