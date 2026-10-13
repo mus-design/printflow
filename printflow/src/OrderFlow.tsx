@@ -156,7 +156,24 @@ function OrderFlow() {
         .order('name')
       if (queryError) throw queryError
       setShops((data ?? []) as Shop[])
-    } catch {
+    } catch (caughtError) {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+      const rawMessage = caughtError instanceof Error ? caughtError.message : String(caughtError)
+      const redactedMessage = [supabaseUrl, supabaseAnonKey]
+        .filter((value): value is string => Boolean(value))
+        .reduce((message, secret) => message.replaceAll(secret, '[redacted]'), rawMessage)
+        .replace(/https?:\/\/[^\s"'<>]+/gi, '[redacted URL]')
+        .replace(/Bearer\s+\S+/gi, 'Bearer [redacted]')
+        .replace(/(?:sb_(?:publishable|secret)_)[A-Za-z0-9_-]+/gi, '[redacted token]')
+        .replace(/eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g, '[redacted token]')
+
+      console.error('[PrintFlow] Failed to load print shops.', {
+        name: caughtError instanceof Error ? caughtError.name : 'UnknownError',
+        message: redactedMessage,
+        supabaseUrlConfigured: Boolean(supabaseUrl),
+        supabaseAnonKeyConfigured: Boolean(supabaseAnonKey),
+      })
       setShopsLoadError('We couldn’t load print shops. Check your connection and try again.')
     } finally {
       setShopsLoading(false)
