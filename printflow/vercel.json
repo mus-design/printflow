@@ -1,4 +1,5 @@
 {
+  "installCommand": "npm install --production=false",
   "rewrites": [
     { "source": "/order", "destination": "/index.html" },
     { "source": "/shop", "destination": "/index.html" }
